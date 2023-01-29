@@ -66,7 +66,7 @@ if (%InterfaceAllowed%) {
 	Gui, Show, x%winPosX% y%winPosY% w240 h400
 }
 
-if (InterfaceAllowed && ClockAllowed) {
+if (%InterfaceAllowed% && %ClockAllowed%) {
 	SetTimer, UpdateTime, 1000
 }
 
@@ -92,7 +92,7 @@ UpdateTime:
 Return
 
 AttackRemap:
-	if (RemapAllowed) {
+	if (%RemapAllowed%) {
 		if (!RemapEnabled) {
 			RemapEnabled := true
 			
@@ -104,7 +104,7 @@ AttackRemap:
 			HotKey, +WheelDown, LightAttack, On
 			Hotkey, LButton, HardAttack, On
 			
-			if (InterfaceAllowed) {
+			if (%InterfaceAllowed%) {
 				GuiControl, +c%OnColor%, RemapStatus
 				GuiControl,, RemapStatus, ON
 			} else {
@@ -123,7 +123,7 @@ AttackRemap:
 			HotKey, +WheelDown, LightAttack, Off
 			Hotkey, LButton, HardAttack, Off
 			
-			if (InterfaceAllowed) {
+			if (%InterfaceAllowed%) {
 				GuiControl, +c%OffColor%, RemapStatus
 				GuiControl,, RemapStatus, OFF
 			} else {
@@ -154,7 +154,7 @@ HardAttack:
 Return
 
 AutoTag:
-	if (AutoTagAllowed) {
+	if (%AutoTagAllowed%) {
 		if (!AutoTagEnabled) {
 			AutoTagEnabled := true
 			IntervalValue := TagInterval
@@ -174,7 +174,7 @@ AutoTag:
 			
 			SetTimer TargetTag, %TagInterval%
 			
-			if (InterfaceAllowed) {
+			if (%InterfaceAllowed%) {
 				GuiControl, +c%OnColor%, AutoTagStatus
 				GuiControl,, AutoTagStatus, %IntervalValue%
 				GuiControl,, IntervalUnit, %UnitValue%
@@ -189,7 +189,7 @@ AutoTag:
 			
 			SetTimer TargetTag, Off
 			
-			if (InterfaceAllowed) {
+			if (%InterfaceAllowed%) {
 				GuiControl, +c%OffColor%, AutoTagStatus
 				GuiControl,, AutoTagStatus, OFF
 				GuiControl,, IntervalUnit, %UnitValue%
