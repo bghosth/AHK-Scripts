@@ -8,8 +8,7 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-#Include Config.ahk
-#Include Language.ahk
+#Include loader.ahk
 
 if (FontSize < 9) {
 	SizeValue := 9
@@ -26,28 +25,38 @@ RemapEnabled := false
 AutoTagEnabled := false
 UnitValue := ""
 
-if (InterfaceAllowed) {
+if (%InterfaceAllowed%) {
 	Gui, Color, 000000
 	Gui, Margin, 10, 10
 	Gui, Font, s%SizeValue% Bold, Comic Sans MS
 	Gui +LastFound +AlwaysOnTop +ToolWindow
 	WinSet, TransColor, 000000
 
-	if (ClockAllowed) {
+	if (%ClockAllowed%) {
 		Gui, Add, Text, w120 c%GeneralColor% BackgroundTrans, %ClockTitle%
 		Gui, Add, Text, x+0 yp w10 c%GeneralColor% BackgroundTrans, :
 		Gui, Add, Text, x+0 yp w60 c%TimeColor% BackgroundTrans vDisplayTime, 00:00:00
 		Gui, Add, Text, x+4 yp w30 c%GeneralColor% BackgroundTrans vDayPeriod, %PeriodValue%
 	}
 
-	if (RemapAllowed) {
-		Gui, Add, Text, xs w120 c%GeneralColor% BackgroundTrans, %RemapTitle%
+	if (%RemapAllowed%) {
+		if (%ClockAllowed%) {
+			Gui, Add, Text, xs w120 c%GeneralColor% BackgroundTrans, %RemapTitle%
+		} else {
+			Gui, Add, Text, w120 c%GeneralColor% BackgroundTrans, %RemapTitle%
+		}
+		
 		Gui, Add, Text, x+0 yp w10 c%GeneralColor% BackgroundTrans, :
 		Gui, Add, Text, x+0 yp w30 c%OffColor% BackgroundTrans vRemapStatus, OFF
 	}
 
-	if (AutoTagAllowed) {
-		Gui, Add, Text, xs w120 c%GeneralColor% BackgroundTrans, %AutoTagTitle%
+	if (%AutoTagAllowed%) {
+		if (%ClockAllowed% || %RemapAllowed%) {
+			Gui, Add, Text, xs w120 c%GeneralColor% BackgroundTrans, %AutoTagTitle%
+		} else {
+			Gui, Add, Text, w120 c%GeneralColor% BackgroundTrans, %AutoTagTitle%
+		}
+		
 		Gui, Add, Text, x+0 yp w10 c%GeneralColor% BackgroundTrans, :
 		Gui, Add, Text, x+0 yp w30 c%OffColor% BackgroundTrans vAutoTagStatus, OFF
 		Gui, Add, Text, x+0 yp w20 c%GeneralColor% BackgroundTrans vIntervalUnit, %UnitValue%
@@ -63,6 +72,7 @@ if (InterfaceAllowed && ClockAllowed) {
 
 Hotkey, %RemapKey%, AttackRemap
 Hotkey, %AutoTagKey%, AutoTag
+Hotkey, %ExitKey%, ExitAHK
 Return
 
 UpdateTime:
@@ -200,4 +210,6 @@ RemoveToolTip:
 	ToolTip
 Return
 
-^Esc::ExitApp
+ExitAHK:
+	ExitApp
+Return
